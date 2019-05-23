@@ -895,7 +895,20 @@ omsCMplot <- function(
 								plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,1.01*max(pvalue.posN)),ylim=c(-Max/den.fold,Max+1),ylab=ylab,
 								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
 							}else{
-								plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)),ylim=c(0,Max+1),ylab=ylab,
+								if (Max > 100) {
+									unit = floor(log10(Max))
+									unit_val = 10 ^ unit
+									y_axis_top = ceiling(Max / unit_val)
+									if (y_axis_top == 1) {
+										unit = unit - 1
+										unit_val = unit_val / 10
+										y_axis_top = 10
+									}
+									plot_max = y_axis_top * unit_val + 1
+								} else {
+									plot_max = Max + 1
+								}
+								plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)),ylim=c(0,plot_max),ylab=ylab,
 								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
 							}
 						}
@@ -911,15 +924,19 @@ omsCMplot <- function(
 					}
 
 					if(is.null(chr.labels)){
-						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("Chr",chr.ori))
+						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=0.75,labels=c("Chr",chr.ori))
 					}else{
-						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("Chr",chr.labels))
+						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=0.75,labels=c("Chr",chr.labels))
 					}
 					if(is.null(ylim)){
 						if(Max>100){
 							#print(seq(0,(Max+1),ceiling((Max+1)/10)))
-							y_axis_top = ceiling(Max / 1e9) 
-							axis(2,at=seq(0, y_axis_top * 1e9, 1e9),cex.axis=cex.axis,font=1,labels=paste("10^",seq(0,y_axis_top,1),sep = ""))
+							plot_labels = paste(seq(y_axis_top),"e",unit, sep='')
+							if (y_axis_top == 10) {
+								plot_labels[length(plot_labels)] <- paste("1e",unit+1,sep='')
+							}
+							plot_labels = c(0, plot_labels)
+							axis(2,at=seq(0, y_axis_top * unit_val, unit_val),cex.axis=cex.axis,font=1,labels=plot_labels, las = 1)
 							legend.y <- tail(seq(0,(Max+1),ceiling((Max+1)/10)), 1)
 						} else if (Max<=10){
 							axis(2,at=seq(0,10,2),cex.axis=cex.axis,font=1,labels=(seq(0,10,2)))
