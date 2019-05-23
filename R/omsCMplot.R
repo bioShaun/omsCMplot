@@ -918,7 +918,8 @@ omsCMplot <- function(
 					if(is.null(ylim)){
 						if(Max>100){
 							#print(seq(0,(Max+1),ceiling((Max+1)/10)))
-							axis(2,at=seq(0,10000000000,1000000000),cex.axis=cex.axis,font=1,labels=paste("10^",seq(0,10,1),sep = ""))
+							y_axis_top = ceiling(Max / 1e9) * 1e9
+							axis(2,at=seq(0, y_axis_top, 1e9),cex.axis=cex.axis,font=1,labels=paste("10^",seq(0,10,1),sep = ""))
 							legend.y <- tail(seq(0,(Max+1),ceiling((Max+1)/10)), 1)
 						} else if (Max<=10){
 							axis(2,at=seq(0,10,2),cex.axis=cex.axis,font=1,labels=(seq(0,10,2)))
