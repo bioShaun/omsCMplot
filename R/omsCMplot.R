@@ -837,9 +837,9 @@ omsCMplot <- function(
 				colx=colx[!is.na(colx)]
 				print(paste("Rectangular_Manhattan Plotting ",taxa[i],"...",sep=""))
 					if(file.output){
-						if(file=="jpg")	jpeg(paste(out.name,".jpg",sep=""), width = 14*dpi,height=5*dpi,res=dpi,quality = 100)
-						if(file=="pdf")	pdf(paste(out.name,".pdf",sep=""), width = 15,height=6)
-						if(file=="tiff")	tiff(paste(out.name,".tiff",sep=""), width = 14*dpi,height=5*dpi,res=dpi)
+						if(file=="jpg")	jpeg(paste(out.name,".jpg",sep=""), width = 18*dpi,height=6*dpi,res=dpi,quality = 100)
+						if(file=="pdf")	pdf(paste(out.name,".pdf",sep=""), width = 18,height=6)
+						if(file=="tiff")	tiff(paste(out.name,".tiff",sep=""), width = 18*dpi,height=6*dpi,res=dpi)
 						par(mar = c(5,6,4,3),xaxs=xaxs,yaxs=yaxs,xpd=TRUE)
 					}
 					if(!file.output){
