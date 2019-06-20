@@ -924,9 +924,9 @@ omsCMplot <- function(
 					}
 
 					if(is.null(chr.labels)){
-						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=0.75,labels=c("Chr",chr.ori))
+						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("",chr.ori))
 					}else{
-						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=0.75,labels=c("Chr",chr.labels))
+						axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("",chr.labels))
 					}
 					if(is.null(ylim)){
 						if(Max>100){
