@@ -52,7 +52,8 @@ omsCMplot <- function(
 	file="jpg",
 	dpi=300,
 	memo="",
-	out.name="varScore"
+	out.name="varScore",
+        plot.title=""
 )
 
 {
@@ -206,8 +207,10 @@ omsCMplot <- function(
 			if(is.null(dev.list()))	dev.new(width = 9,height=7)
 			par(xpd=TRUE)
 		}
-
-		Densitplot(map=Pmap[,c(1:3)], col=col, bin=bin.size, legend.max=bin.max, main=paste("The number of SNPs within ", bin.size/1e6, "Mb window size", sep=""))
+                if (plot.title == "") {
+                    plot.title <- paste("The number of SNPs within ", bin.size/1e6, "Mb window size", sep="")
+                } 
+		Densitplot(map=Pmap[,c(1:3)], col=col, bin=bin.size, legend.max=bin.max, main=plot.title)
 		if(file.output)	dev.off()
 	}
 
@@ -836,6 +839,7 @@ omsCMplot <- function(
 				colx=col[i,]
 				colx=colx[!is.na(colx)]
 				print(paste("Rectangular_Manhattan Plotting ",taxa[i],"...",sep=""))
+                                print(plot.title)
 					if(file.output){
 						if(file=="jpg")	jpeg(paste(out.name,".jpg",sep=""), width = 18*dpi,height=6*dpi,res=dpi,quality = 100)
 						if(file=="pdf")	pdf(paste(out.name,".pdf",sep=""), width = 18,height=6)
@@ -875,9 +879,9 @@ omsCMplot <- function(
 							}else{
 								Max=max(pvalue[pvalue!=Inf])
 								if(Max<=1)
-								#{
+								{
 									Max=max(pvalue[pvalue!=Inf])
-								# }else{
+								} #else{
 									# Max=max(ceiling(max(pvalue[pvalue!=Inf])))
 								# }
 							}
@@ -888,7 +892,7 @@ omsCMplot <- function(
 									cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
 							}else{
 								plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)),ylim=c(0,Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
-								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
+								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main=plot.title)
 							}
 						}else{
 							if(cir.density){
@@ -909,7 +913,7 @@ omsCMplot <- function(
 									plot_max = Max + 1
 								}
 								plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)),ylim=c(0,plot_max),ylab=ylab,
-								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
+								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main=plot.title)
 							}
 						}
 					}else{
@@ -919,7 +923,7 @@ omsCMplot <- function(
 							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
 						}else{
 							plot(pvalue.posN[logpvalue>=min(ylim)],logpvalue[logpvalue>=min(ylim)],pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)],xlim=c(0,max(pvalue.posN)),ylim=ylim,ylab=ylab,
-							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="")
+							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main=plot.title)
 						}
 					}
 
