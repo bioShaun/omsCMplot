@@ -53,9 +53,9 @@ omsCMplot <- function(
 	dpi=300,
 	memo="",
 	out.name="varScore",
-        plot.title=""
+        plot.title="",
+        chr.size=NA
 )
-
 {
 	#plot a circle with a radius of r
 	circle.plot <- function(myr,type="l",x=NULL,lty=1,lwd=1,col="black",add=TRUE,n.point=1000)
@@ -77,9 +77,13 @@ omsCMplot <- function(
 		legend.cex=1,
 		legend.y.intersp=1,
 		legend.x.intersp=1,
-		plot=TRUE
+		plot=TRUE,
+                chr.size=NA
 	)
 	{
+                if(!is.na(chr.size)){
+                        chr.size.df <- read.delim(chr.size, header=F, row.names=1, col.names=c('chr_name', 'chr_len'))
+                } 
 		map <- as.matrix(map)
 		map <- map[!is.na(map[, 2]), ]
 		map <- map[!is.na(as.numeric(map[, 3])), ]
@@ -98,6 +102,7 @@ omsCMplot <- function(
 		map <- map[order(as.numeric(map[, 2]), as.numeric(map[, 3])), ]
 		chr <- as.numeric(map[, 2])
 		pos <- as.numeric(map[, 3])
+                chr.len <- c()
 		chr.num <- unique(chr)
 		chorm.maxlen <- max(pos)
 		if(plot)	plot(NULL, xlim=c(0, chorm.maxlen + chorm.maxlen/10), ylim=c(0, length(chr.num) * band + band), main=main,axes=FALSE, xlab="", ylab="", xaxs="i", yaxs="i")
@@ -106,6 +111,11 @@ omsCMplot <- function(
 		maxbin.num <- NULL
 		for(i in 1 : length(chr.num)){
 			pos.x[[i]] <- pos[which(chr == chr.num[i])]
+                        if(!is.na(chr.size)) {
+                            chr.len[i] <- chr.size.df[chr.num[i], 'chr_len']
+                        } else {
+                            chr.len[i] <- max(pos.x[[i]])
+                        }
 			cut.len <- ceiling((max(pos.x[[i]]) - min(pos.x[[i]])) / bin)
 			if(cut.len <= 1){
 				maxbin.num <- c(maxbin.num,length(pos.x[[i]]))
@@ -125,7 +135,7 @@ omsCMplot <- function(
 		col=colorRampPalette(col)(maxbin.num)
 		col.seg=NULL
 		for(i in 1 : length(chr.num)){
-			if(plot)	polygon(c(0, 0, max(pos.x[[i]]), max(pos.x[[i]])),
+			if(plot)	polygon(c(0, 0, chr.len[i], chr.len[i]),
 				c(-width/5 - band * (i - length(chr.num) - 1), width/5 - band * (i - length(chr.num) - 1),
 				width/5 - band * (i - length(chr.num) - 1), -width/5 - band * (i - length(chr.num) - 1)), col="grey", border="grey")
 			if(!is.null(legend.max)){
@@ -210,7 +220,7 @@ omsCMplot <- function(
                 if (plot.title == "") {
                     plot.title <- paste("The number of SNPs within ", bin.size/1e6, "Mb window size", sep="")
                 } 
-		Densitplot(map=Pmap[,c(1:3)], col=col, bin=bin.size, legend.max=bin.max, main=plot.title)
+		Densitplot(map=Pmap[,c(1:3)], col=col, bin=bin.size, legend.max=bin.max, main=plot.title, chr.size=chr.size)
 		if(file.output)	dev.off()
 	}
 
@@ -839,7 +849,6 @@ omsCMplot <- function(
 				colx=col[i,]
 				colx=colx[!is.na(colx)]
 				print(paste("Rectangular_Manhattan Plotting ",taxa[i],"...",sep=""))
-                                print(plot.title)
 					if(file.output){
 						if(file=="jpg")	jpeg(paste(out.name,".jpg",sep=""), width = 18*dpi,height=6*dpi,res=dpi,quality = 100)
 						if(file=="pdf")	pdf(paste(out.name,".pdf",sep=""), width = 18,height=6)
@@ -912,7 +921,8 @@ omsCMplot <- function(
 								} else {
 									plot_max = Max + 1
 								}
-								plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)),ylim=c(0,plot_max),ylab=ylab,
+                                                                # rm snp added as a position label 
+								plot(pvalue.posN[logpvalue>1],logpvalue[logpvalue>1],pch=pch,cex=cex[2],col=rep(rep(colx,N[i]),add[[i]])[logpvalue>1],xlim=c(0,max(pvalue.posN)),ylim=c(0,plot_max),ylab=ylab,
 								cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main=plot.title)
 							}
 						}
