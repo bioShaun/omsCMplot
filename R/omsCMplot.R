@@ -1063,8 +1063,10 @@ omsCMplot <- function(
 			#print("Starting Rectangular-Manhattan plot!",quote=F)
 			#print("Plotting in multiple tracks!",quote=F)
 			if(file.output){
-				if(file=="jpg")	jpeg(paste("Multracks.Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi,quality = 100)
-				if(file=="pdf")	pdf(paste("Multracks.Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6*R)
+				if(file=="jpg")	jpeg(paste(out.name,".jpg",sep=""), width = 18*dpi,height=6*dpi*R,res=dpi,quality = 100)
+                #jpeg(paste("Multracks.Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi,quality = 100)
+				if(file=="pdf")	pdf(paste(out.name,".pdf",sep=""), width = 18,height=6*R)
+                #pdf(paste("Multracks.Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6*R)
 				if(file=="tiff")	tiff(paste("Multracks.Rectangular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 14*dpi,height=5*dpi*R,res=dpi)
 				par(mfcol=c(R,1),mar=c(0, 6+(R-1)*2, 0, 2),oma=c(4,0,4,0),xaxs=xaxs,yaxs=yaxs,xpd=TRUE)
 			}
@@ -1122,8 +1124,18 @@ omsCMplot <- function(
 				}else{
 					xn <- ifelse(R == 1, R, R * 2/3)
 					Max <- max(ylim)
-					plot(pvalue.posN[logpvalue>=min(ylim)],logpvalue[logpvalue>=min(ylim)],pch=pch,cex=cex[2]*xn,col=rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)],xlim=c(0,max(pvalue.posN)+band),ylim=ylim,ylab=ylab,
-						cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
+					plot(pvalue.posN[logpvalue>=min(ylim)],logpvalue[logpvalue>=min(ylim)],pch=pch,cex=cex[2]*xn,
+                    col=rgb(
+                        col2rgb(t(rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)])[i])[1], 
+                        col2rgb(t(rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)])[i])[2], 
+                        col2rgb(t(rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)])[i])[3], 
+                        100, maxColorValue=255)
+                    #col=rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)],
+                    xlim=c(0,max(pvalue.posN)+band),
+                    ylim=ylim,ylab=ylab,
+					cex.axis=cex.axis*xn,
+                    cex.lab=1*xn,
+                    font=1,axes=FALSE)
 				}
 
 				#add the names of traits on plot
@@ -1139,7 +1151,8 @@ omsCMplot <- function(
 						axis(1, at=c(0,ticks),cex.axis=cex.axis*xn,font=1,labels=c("",chr.labels),padj=(xn-1)/2)
 					}
 				}
-				if(i==1) mtext("Manhattan plot",side=3,padj=-1,font=1,cex=xn)
+				#if(i==1) mtext("Manhattan plot",side=3,padj=-1,font=1,cex=xn)
+                if(i==1) mtext(plot.title,side=3,padj=-1,font=1,cex=xn)
 				if(is.null(ylim)){
 					if(Max>100){
 						axis(2,at=seq(0,(Max+1),ceiling((Max+1)/10)),cex.axis=cex.axis*xn,font=1,labels=sprintf("%.2f",log10(seq(0,(Max+1),ceiling((Max+1)/10)))+1))
