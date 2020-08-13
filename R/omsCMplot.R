@@ -1229,8 +1229,7 @@ omsCMplot <- function(
 
 			if(file.output) dev.off()
 
-            if (FALSE) {
-                
+            if (FALSE) {                
                 if(file.output){
                     if(file=="jpg")	jpeg(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi,res=dpi,quality = 100)
                     if(file=="pdf")	pdf(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6)
