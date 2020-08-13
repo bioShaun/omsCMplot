@@ -1114,18 +1114,18 @@ omsCMplot <- function(
 						}
 					}
 					xn <- ifelse(R == 1, R, R * 2/3)
-                    all_cols <- rep(rep(colx,N[i]),add[[i]]) 
-                    alpha_cols_func <- function(col) {
-                        return(rgb(col2rgb(t(col)[i])[1], col2rgb(t(col)[i])[2], col2rgb(t(col)[i])[3], 100, maxColorValue=255))
-                    }
-                    alpha_cols <- alpha_cols_func(all_cols)
+
 					if(Max<=1){
 
-						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,col=alpha_cols,xlim=c(0,max(pvalue.posN)+band),ylim=c(0,Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
+						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,
+                        col=scales::alpha(rep(rep(colx,N[i]),add[[i]]), 0.5),
+                        xlim=c(0,max(pvalue.posN)+band),ylim=c(0,Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
 							cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
 					}else{
                      
-						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,col=alpha_cols,xlim=c(0,max(pvalue.posN)+band),ylim=c(0,Max+1),ylab=ylab,
+						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,
+                        col=scales::alpha(rep(rep(colx,N[i]),add[[i]]), 0.5),
+                        xlim=c(0,max(pvalue.posN)+band),ylim=c(0,Max+1),ylab=ylab,
 							cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
 					}
 				}else{
