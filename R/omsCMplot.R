@@ -1226,172 +1226,177 @@ omsCMplot <- function(
 
 			#add the labels of X-axis
 			#mtext(xlab,side=1,padj=2.5,font=1,cex=R*2/3)
+
 			if(file.output) dev.off()
 
-			if(file.output){
-				if(file=="jpg")	jpeg(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi,res=dpi,quality = 100)
-				if(file=="pdf")	pdf(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6)
-				if(file=="tiff")	tiff(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 14*dpi,height=5*dpi,res=dpi)
-				par(mar = c(5,6,4,3),xaxs=xaxs,yaxs=yaxs,xpd=TRUE)
-			}
-			if(!file.output){
-				if(is.null(dev.list()))	dev.new(width = 15, height = 6)
-				par(xpd=TRUE)
-			}
+            if (FALSE) {
+                
+                if(file.output){
+                    if(file=="jpg")	jpeg(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".jpg",sep=""), width = 14*dpi,height=5*dpi,res=dpi,quality = 100)
+                    if(file=="pdf")	pdf(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".pdf",sep=""), width = 15,height=6)
+                    if(file=="tiff")	tiff(paste("Multraits.Rectangular-Manhattan.",paste(taxa,collapse="."),".tiff",sep=""), width = 14*dpi,height=5*dpi,res=dpi)
+                    par(mar = c(5,6,4,3),xaxs=xaxs,yaxs=yaxs,xpd=TRUE)
+                }
+                if(!file.output){
+                    if(is.null(dev.list()))	dev.new(width = 15, height = 6)
+                    par(xpd=TRUE)
+                }
 
-			pvalue <- as.vector(Pmap[,3:(R+2)])
-			if(is.null(ylim)){
-				if(!is.null(threshold)){
-					if(sum(threshold!=0)==length(threshold)){
-						if(LOG10){
-							Max=max(ceiling(-log10(min(pvalue[pvalue!=0]))),-log10(min(threshold)))
-						}else{
-							Max=max(ceiling(max(pvalue[pvalue!=Inf])),max(threshold))
-							if(Max<=1)	Max=max(max(pvalue[pvalue!=Inf]),max(threshold))
-						}
-					}else{
-						if(LOG10){
-							Max=max(ceiling(-log10(min(pvalue[pvalue!=0]))))
-						}else{
-							Max=max(ceiling(max(pvalue[pvalue!=Inf])))
-							if(Max<=1)
-							#{
-								Max=max(max(pvalue[pvalue!=Inf]))
-							# }else{
-								# Max=max(ceiling(max(pvalue[pvalue!=Inf])))
-							# }
-						}
-					}
-				}else{
-					if(LOG10){
-						Max=max(ceiling(-log10(min(pvalue[pvalue!=0]))))
-					}else{
-						Max=max(ceiling(max(pvalue[pvalue!=Inf])))
+                pvalue <- as.vector(Pmap[,3:(R+2)])
+                if(is.null(ylim)){
+                    if(!is.null(threshold)){
+                        if(sum(threshold!=0)==length(threshold)){
+                            if(LOG10){
+                                Max=max(ceiling(-log10(min(pvalue[pvalue!=0]))),-log10(min(threshold)))
+                            }else{
+                                Max=max(ceiling(max(pvalue[pvalue!=Inf])),max(threshold))
+                                if(Max<=1)	Max=max(max(pvalue[pvalue!=Inf]),max(threshold))
+                            }
+                        }else{
+                            if(LOG10){
+                                Max=max(ceiling(-log10(min(pvalue[pvalue!=0]))))
+                            }else{
+                                Max=max(ceiling(max(pvalue[pvalue!=Inf])))
+                                if(Max<=1)
+                                #{
+                                    Max=max(max(pvalue[pvalue!=Inf]))
+                                # }else{
+                                    # Max=max(ceiling(max(pvalue[pvalue!=Inf])))
+                                # }
+                            }
+                        }
+                    }else{
+                        if(LOG10){
+                            Max=max(ceiling(-log10(min(pvalue[pvalue!=0]))))
+                        }else{
+                            Max=max(ceiling(max(pvalue[pvalue!=Inf])))
 
-						#{
-						if(Max<=1)	Max=max(max(pvalue[pvalue!=Inf]))
-						# }else{
-							# Max=max(ceiling(max(pvalue[pvalue!=Inf])))
-						# }
-					}
-				}
-				if(Max<=1){
-					if(cir.density){
-						plot(NULL,xlim=c(0,1.01*max(pvalue.posN)),ylim=c(-Max/den.fold, Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
-							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot")
-					}else{
-						plot(NULL,xlim=c(0,max(pvalue.posN)),ylim=c(0,Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
-							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot")
-					}
-				}else{
-					if(cir.density){
-						plot(NULL,xlim=c(0,1.01*max(pvalue.posN)),ylim=c(-Max/den.fold,Max+1),ylab=ylab,
-							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
-					}else{
-						plot(NULL,xlim=c(0,max(pvalue.posN)),ylim=c(0,Max+1),ylab=ylab,
-							cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
-					}
-				}
-			}else{
-				Max <- max(ylim)
-				if(cir.density){
-					plot(NULL,xlim=c(0,1.01*max(pvalue.posN)),ylim=c(min(ylim)-Max/den.fold,Max+1),ylab=ylab,
-						cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
-				}else{
-					plot(NULL,xlim=c(0,max(pvalue.posN)),ylim=ylim,ylab=ylab,
-						cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
-				}
-			}
-			legend("topleft",taxa,col=t(col)[1:R],pch=19,text.font=6,box.col=NA)
-			if(is.null(chr.labels)){
-				axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("",chr.ori))
-			}else{
-				axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("",chr.labels))
-			}
-			if(is.null(ylim)){
-				if(Max>100){
-					#print(seq(0,(Max+1),ceiling((Max+1)/10)))
-					axis(2,at=seq(0,(Max+1),ceiling((Max+1)/10)),cex.axis=cex.axis,font=1,labels=sprintf("%.2f",log10(seq(0,(Max+1),ceiling((Max+1)/10)))+1))
-					legend.y <- tail(seq(0,(Max+1),ceiling((Max+1)/10)), 1)
-				}else{
-					axis(2,at=seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))),cex.axis=cex.axis,font=1,labels=seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))))
-					legend.y <- tail(seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))), 1)
-				}
-			}else{
-				if(ylim[2]>1){
-					axis(2,at=seq(min(ylim),(ylim[2]),ceiling((ylim[2])/10)),cex.axis=cex.axis,font=1,labels=seq(min(ylim),(ylim[2]),ceiling((ylim[2])/10)))
-					legend.y <- tail(ylim[2], 1)
-				}else{
-					axis(2,at=seq(min(ylim),ylim[2],10^(-ceiling(-log10(ylim[2])))),cex.axis=cex.axis,font=1,labels=seq(min(ylim),ylim[2],10^(-ceiling(-log10(ylim[2])))))
-					legend.y <- tail(ylim[2], 1)
-				}
-			}
-			do <- TRUE
-			sam.index <- list()
-			for(l in 1:R){
-				sam.index[[l]] <- 1:nrow(Pmap)
-			}
+                            #{
+                            if(Max<=1)	Max=max(max(pvalue[pvalue!=Inf]))
+                            # }else{
+                                # Max=max(ceiling(max(pvalue[pvalue!=Inf])))
+                            # }
+                        }
+                    }
+                    if(Max<=1){
+                        if(cir.density){
+                            plot(NULL,xlim=c(0,1.01*max(pvalue.posN)),ylim=c(-Max/den.fold, Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
+                                cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot")
+                        }else{
+                            plot(NULL,xlim=c(0,max(pvalue.posN)),ylim=c(0,Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
+                                cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot")
+                        }
+                    }else{
+                        if(cir.density){
+                            plot(NULL,xlim=c(0,1.01*max(pvalue.posN)),ylim=c(-Max/den.fold,Max+1),ylab=ylab,
+                                cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
+                        }else{
+                            plot(NULL,xlim=c(0,max(pvalue.posN)),ylim=c(0,Max+1),ylab=ylab,
+                                cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
+                        }
+                    }
+                }else{
+                    Max <- max(ylim)
+                    if(cir.density){
+                        plot(NULL,xlim=c(0,1.01*max(pvalue.posN)),ylim=c(min(ylim)-Max/den.fold,Max+1),ylab=ylab,
+                            cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
+                    }else{
+                        plot(NULL,xlim=c(0,max(pvalue.posN)),ylim=ylim,ylab=ylab,
+                            cex.axis=cex.axis,cex.lab=1,font=1,axes=FALSE,xlab=xlab,main="Manhattan plot of")
+                    }
+                }
+                legend("topleft",taxa,col=t(col)[1:R],pch=19,text.font=6,box.col=NA)
+                if(is.null(chr.labels)){
+                    axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("",chr.ori))
+                }else{
+                    axis(1, at=c(0,ticks),cex.axis=cex.axis,font=1,labels=c("",chr.labels))
+                }
+                if(is.null(ylim)){
+                    if(Max>100){
+                        #print(seq(0,(Max+1),ceiling((Max+1)/10)))
+                        axis(2,at=seq(0,(Max+1),ceiling((Max+1)/10)),cex.axis=cex.axis,font=1,labels=sprintf("%.2f",log10(seq(0,(Max+1),ceiling((Max+1)/10)))+1))
+                        legend.y <- tail(seq(0,(Max+1),ceiling((Max+1)/10)), 1)
+                    }else{
+                        axis(2,at=seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))),cex.axis=cex.axis,font=1,labels=seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))))
+                        legend.y <- tail(seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))), 1)
+                    }
+                }else{
+                    if(ylim[2]>1){
+                        axis(2,at=seq(min(ylim),(ylim[2]),ceiling((ylim[2])/10)),cex.axis=cex.axis,font=1,labels=seq(min(ylim),(ylim[2]),ceiling((ylim[2])/10)))
+                        legend.y <- tail(ylim[2], 1)
+                    }else{
+                        axis(2,at=seq(min(ylim),ylim[2],10^(-ceiling(-log10(ylim[2])))),cex.axis=cex.axis,font=1,labels=seq(min(ylim),ylim[2],10^(-ceiling(-log10(ylim[2])))))
+                        legend.y <- tail(ylim[2], 1)
+                    }
+                }
+                do <- TRUE
+                sam.index <- list()
+                for(l in 1:R){
+                    sam.index[[l]] <- 1:nrow(Pmap)
+                }
 
-			#change the sample number according to Pmap
-			sam.num <- ceiling(nrow(Pmap)/30)
-			print("Multraits_Rectangular Plotting...")
-			while(do){
-				for(i in 1:R){
-					if(length(sam.index[[i]]) < sam.num){
-						plot.index <- sam.index[[i]]
-					}else{
-						plot.index <- sample(sam.index[[i]], sam.num, replace=FALSE)
-					}
-					sam.index[[i]] <- sam.index[[i]][-which(sam.index[[i]] %in% plot.index)]
-					logpvalue=logpvalueT[plot.index,i]
-					if(!is.null(ylim)){indexx <- logpvalue>=min(ylim)}else{indexx <- 1:length(logpvalue)}
-					points(pvalue.posN[plot.index][indexx],logpvalue[indexx],pch=pch,cex=cex[2],col=rgb(col2rgb(t(col)[i])[1], col2rgb(t(col)[i])[2], col2rgb(t(col)[i])[3], 100, maxColorValue=255))
-					#if(!is.null(threshold) & (length(grep("FarmCPU",taxa[i])) != 0))	abline(v=which(pvalueT[,i] < min(threshold)/max(dim(Pmap))),col="grey",lty=2,lwd=signal.line)
-				}
-				if(length(sam.index[[i]]) == 0) do <- FALSE
-			}
+                #change the sample number according to Pmap
+                sam.num <- ceiling(nrow(Pmap)/30)
+                print("Multraits_Rectangular Plotting...")
+                while(do){
+                    for(i in 1:R){
+                        if(length(sam.index[[i]]) < sam.num){
+                            plot.index <- sam.index[[i]]
+                        }else{
+                            plot.index <- sample(sam.index[[i]], sam.num, replace=FALSE)
+                        }
+                        sam.index[[i]] <- sam.index[[i]][-which(sam.index[[i]] %in% plot.index)]
+                        logpvalue=logpvalueT[plot.index,i]
+                        if(!is.null(ylim)){indexx <- logpvalue>=min(ylim)}else{indexx <- 1:length(logpvalue)}
+                        points(pvalue.posN[plot.index][indexx],logpvalue[indexx],pch=pch,cex=cex[2],col=rgb(col2rgb(t(col)[i])[1], col2rgb(t(col)[i])[2], col2rgb(t(col)[i])[3], 100, maxColorValue=255))
+                        #if(!is.null(threshold) & (length(grep("FarmCPU",taxa[i])) != 0))	abline(v=which(pvalueT[,i] < min(threshold)/max(dim(Pmap))),col="grey",lty=2,lwd=signal.line)
+                    }
+                    if(length(sam.index[[i]]) == 0) do <- FALSE
+                }
 
-			# for(i in 1:R){
-				# logpvalue=logpvalueT[,i]
-				# points(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=t(col)[i])
-			# }
+                # for(i in 1:R){
+                    # logpvalue=logpvalueT[,i]
+                    # points(pvalue.posN,logpvalue,pch=pch,cex=cex[2],col=t(col)[i])
+                # }
 
-			if(!is.null(threshold)){
-				if(sum(threshold!=0)==length(threshold)){
-					for(thr in 1:length(threshold)){
-						h <- ifelse(LOG10, -log10(threshold[thr]), threshold[thr])
-						par(xpd=FALSE); abline(h=h,col=threshold.col[thr],lwd=threshold.lwd[thr],lty=threshold.lty[thr]); par(xpd=TRUE)
-					}
-				}
-			}
-			if(is.null(ylim)){ymin <- 0}else{ymin <- min(ylim)}
-			if(cir.density){
-						for(yll in 1:length(pvalue.posN.list)){
-							polygon(c(min(pvalue.posN.list[[yll]]), min(pvalue.posN.list[[yll]]), max(pvalue.posN.list[[yll]]), max(pvalue.posN.list[[yll]])),
-								c(ymin-0.5*Max/den.fold, ymin-1.5*Max/den.fold,
-								ymin-1.5*Max/den.fold, ymin-0.5*Max/den.fold),
-								col="grey", border="grey")
-						}
+                if(!is.null(threshold)){
+                    if(sum(threshold!=0)==length(threshold)){
+                        for(thr in 1:length(threshold)){
+                            h <- ifelse(LOG10, -log10(threshold[thr]), threshold[thr])
+                            par(xpd=FALSE); abline(h=h,col=threshold.col[thr],lwd=threshold.lwd[thr],lty=threshold.lty[thr]); par(xpd=TRUE)
+                        }
+                    }
+                }
+                if(is.null(ylim)){ymin <- 0}else{ymin <- min(ylim)}
+                if(cir.density){
+                            for(yll in 1:length(pvalue.posN.list)){
+                                polygon(c(min(pvalue.posN.list[[yll]]), min(pvalue.posN.list[[yll]]), max(pvalue.posN.list[[yll]]), max(pvalue.posN.list[[yll]])),
+                                    c(ymin-0.5*Max/den.fold, ymin-1.5*Max/den.fold,
+                                    ymin-1.5*Max/den.fold, ymin-0.5*Max/den.fold),
+                                    col="grey", border="grey")
+                            }
 
-						segments(
-							pvalue.posN,
-							ymin-0.5*Max/den.fold,
-							pvalue.posN,
-							ymin-1.5*Max/den.fold,
-							col=density.list$den.col, lwd=0.1
-						)
-						legend(
-							x=max(pvalue.posN)+band,
-							y=legend.y,
-							title="", legend=density.list$legend.y, pch=15, pt.cex = 2.5, col=density.list$legend.col,
-							cex=0.8, bty="n",
-							y.intersp=1,
-							x.intersp=1,
-							yjust=1, xjust=0, xpd=TRUE
-						)
+                            segments(
+                                pvalue.posN,
+                                ymin-0.5*Max/den.fold,
+                                pvalue.posN,
+                                ymin-1.5*Max/den.fold,
+                                col=density.list$den.col, lwd=0.1
+                            )
+                            legend(
+                                x=max(pvalue.posN)+band,
+                                y=legend.y,
+                                title="", legend=density.list$legend.y, pch=15, pt.cex = 2.5, col=density.list$legend.col,
+                                cex=0.8, bty="n",
+                                y.intersp=1,
+                                x.intersp=1,
+                                yjust=1, xjust=0, xpd=TRUE
+                            )
 
-			}
-			if(file.output) dev.off()
+                }
+                if(file.output) dev.off()
+            }
+
 
 		}
 	}
