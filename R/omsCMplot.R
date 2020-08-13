@@ -1129,7 +1129,7 @@ omsCMplot <- function(
                         col2rgb(t(rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)])[i])[1], 
                         col2rgb(t(rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)])[i])[2], 
                         col2rgb(t(rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)])[i])[3], 
-                        100, maxColorValue=255)
+                        100, maxColorValue=255),
                     #col=rep(rep(colx,N[i]),add[[i]])[logpvalue>=min(ylim)],
                     xlim=c(0,max(pvalue.posN)+band),
                     ylim=ylim,ylab=ylab,
