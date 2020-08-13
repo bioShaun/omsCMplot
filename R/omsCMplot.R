@@ -1115,11 +1115,26 @@ omsCMplot <- function(
 					}
 					xn <- ifelse(R == 1, R, R * 2/3)
 					if(Max<=1){
-						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)+band),ylim=c(0,Max+10^(-ceiling(-log10(Max)))),ylab=ylab,
-							cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
+						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,
+                        col=rgb(
+                            col2rgb(t(rep(rep(colx,N[i]),add[[i]]))[i])[1], 
+                            col2rgb(t(rep(rep(colx,N[i]),add[[i]]))[i])[2], 
+                            col2rgb(t(rep(rep(colx,N[i]),add[[i]]))[i])[3], 
+                            100, maxColorValue=255),
+                        xlim=c(0,max(pvalue.posN)+band),
+                        ylim=c(0,Max+10^(-ceiling(-log10(Max)))),
+                        ylab=ylab,
+						cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
 					}else{
-						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,col=rep(rep(colx,N[i]),add[[i]]),xlim=c(0,max(pvalue.posN)+band),ylim=c(0,Max+1),ylab=ylab,
-							cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
+						plot(pvalue.posN,logpvalue,pch=pch,cex=cex[2]*xn,
+                        col=rgb(
+                            col2rgb(t(rep(rep(colx,N[i]),add[[i]]))[i])[1], 
+                            col2rgb(t(rep(rep(colx,N[i]),add[[i]]))[i])[2], 
+                            col2rgb(t(rep(rep(colx,N[i]),add[[i]]))[i])[3], 
+                            100, maxColorValue=255),
+                        xlim=c(0,max(pvalue.posN)+band),
+                        ylim=c(0,Max+1),ylab=ylab,
+						cex.axis=cex.axis*xn,cex.lab=1*xn,font=1,axes=FALSE)
 					}
 				}else{
 					xn <- ifelse(R == 1, R, R * 2/3)
