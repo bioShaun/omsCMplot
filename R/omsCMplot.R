@@ -1156,7 +1156,24 @@ omsCMplot <- function(
                 if(i==1) mtext(plot.title,side=3,padj=-1,font=1,cex=xn)
 				if(is.null(ylim)){
 					if(Max>100){
-						axis(2,at=seq(0,(Max+1),ceiling((Max+1)/10)),cex.axis=cex.axis*xn,font=1,labels=sprintf("%.2f",log10(seq(0,(Max+1),ceiling((Max+1)/10)))+1))
+
+                        unit = floor(log10(Max))
+                        unit_val = 10 ^ unit
+                        y_axis_top = ceiling(Max / unit_val)
+                        if (y_axis_top == 1) {
+                            unit = unit - 1
+                            unit_val = unit_val / 10
+                            y_axis_top = 10
+                        }
+                        plot_max = y_axis_top * unit_val + 1
+
+                        plot_labels = paste(seq(y_axis_top),"e",unit, sep='')
+                        if (y_axis_top == 10) {
+                            plot_labels[length(plot_labels)] <- paste("1e",unit+1,sep='')
+                        }
+                        plot_labels = c(0, plot_labels)                        
+                        axis(2,at=seq(0, y_axis_top * unit_val, unit_val),cex.axis=cex.axis*xn,font=1,labels=plot_labels, las = 1)
+						#axis(2,at=seq(0,(Max+1),ceiling((Max+1)/10)),cex.axis=cex.axis*xn,font=1,labels=sprintf("%.2f",log10(seq(0,(Max+1),ceiling((Max+1)/10)))))
 					}else{
 						axis(2,at=seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))),cex.axis=cex.axis*xn,font=1,labels=seq(0,Max+10^(-ceiling(-log10(Max))),10^(-ceiling(-log10(Max)))))
 					}
